@@ -1,3 +1,4 @@
 ﻿  ConsoleApplication1.cpp
-C:\Users\Аркадий\Desktop\MUCTR labs\parallel programming\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.cpp(67,3): warning C4551: function call missing argument list
+C:\Users\Аркадий\Desktop\MUCTR labs\parallel programming\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.cpp(25,30): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Аркадий\Desktop\MUCTR labs\parallel programming\ConsoleApplication1\ConsoleApplication1\ConsoleApplication1.cpp(39,2): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   ConsoleApplication1.vcxproj -> C:\Users\Аркадий\Desktop\MUCTR labs\parallel programming\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe

@@ -6,63 +6,81 @@
 #include <iostream>
 #include <thread>
 #include <fstream>
+#include <math.h>
 
-const int N = 1;
+const int NUMBER_OF_THREADS = 4;
+const int CHAR_A = 97;
+const int CHAR_Z = 122;
+const int BASE_10 = 10;
+const int BASE_26 = 26;
+const int HIGHEST_PASSWORD = 11881376;
 
 using namespace std;
 
-void divide(int i, int p, string password, bool* p_found, chrono::high_resolution_clock::time_point* p_end) {
-	for (int a = i; a < i + p; a++) {
-		for (int b = i; b < i + p; b++) {
-			for (int c = i; c < i + p; c++) {
-				for (int d = i; d < i + p; d++) {
-					for (int e = i; e < i + p; e++) {
-						if (!*p_found) {
-							string passwd = { char(a), char(b), char(c), char(d), char(e) };
-							if (passwd == password) {
-								*p_end = chrono::high_resolution_clock::now();
-								*p_found = 1;
-							}
-						}
-						else {
-							return;
-						}
-					}
-				}
+int _26to10(string in26) {
+	int out10 = 0;
+	int power = 0;
+	while (in26.length() > 0) {
+		char s = in26[in26.length() - 1];
+		out10 += (int(s) - CHAR_A) * pow(BASE_26, power);
+		in26 = in26.substr(0, in26.length() - 1);
+		power++;
+	}
+	return out10;
+}
+
+string _10to26(int in10) {
+	string out26 = "";
+	string out_reversed;
+	while (in10 > 0) {
+		out_reversed.push_back(char(CHAR_A + in10 % BASE_26));
+		in10 /= BASE_26;
+	}
+	for (int l = out_reversed.length() - 1; l >= 0; l--) {
+		out26.push_back(out_reversed[l]);
+	}
+	return out26;
+}
+
+void divide(int start, int finish, int password, bool* p_found, chrono::high_resolution_clock::time_point* p_end) {
+	for (int i = start; i < finish; i++) {
+		if (!*p_found) {
+			if (i == password) {
+				*p_end = chrono::high_resolution_clock::now();
+				*p_found = 1;
 			}
+		}
+		else {
+			return;
 		}
 	}
 }
 
 void findPassword(string password) {
 
-	thread threadObj[N];
+	thread threadObj[NUMBER_OF_THREADS];
 	bool found = 0;
 	chrono::high_resolution_clock::time_point end;
 	chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
 	
-	for (int i = 0; i < N; i++){
-		threadObj[i] = thread(divide, 97 + 26 * i / N, (26 * (i + 1) / N) - (26 * i / N), password, &found, &end);
+	for (int i = 0; i < NUMBER_OF_THREADS; i++){
+		threadObj[i] = thread(divide, i * HIGHEST_PASSWORD / NUMBER_OF_THREADS, (i + 1) * HIGHEST_PASSWORD / NUMBER_OF_THREADS, _26to10(password), &found, &end);
 	}
 
-	for (int i = 0; i < N; i++) {
+	for (int i = 0; i < NUMBER_OF_THREADS; i++) {
 		threadObj[i].join();
 	}
-	chrono::duration<double> time = end - start;
-	cout << time.count() << endl;
+	chrono::duration<double, milli> time = end - start;
+	cout << time.count() << "ms" << endl;
 }
 
 int main() { //a=97 z=122
-	//int i = 97;
-	//char c = 'a';
-	//cout << c << c << endl;
-	
 
 	ifstream file;
 	file.open("password.txt");
 	if (!file.is_open()) {
 		cout << "error" << endl;
-		exit;
+		exit(-1);
 	}
 
 	string password;
