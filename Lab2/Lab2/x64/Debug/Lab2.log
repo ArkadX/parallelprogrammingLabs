@@ -1,0 +1,4 @@
+﻿  Lab2.cpp
+C:\Users\Аркадий\Desktop\MUCTR labs\parallel programming\Lab2\Lab2\Lab2.cpp(22,30): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Аркадий\Desktop\MUCTR labs\parallel programming\Lab2\Lab2\Lab2.cpp(36,2): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Lab2.vcxproj -> C:\Users\Аркадий\Desktop\MUCTR labs\parallel programming\Lab2\x64\Debug\Lab2.exe
